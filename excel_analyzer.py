@@ -9,6 +9,20 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from io import BytesIO
 
+def create_pdf(text):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer)
+
+    styles = getSampleStyleSheet()
+    content = []
+
+    for line in text.split("\n"):
+        content.append(Paragraph(line, styles["Normal"]))
+
+    doc.build(content)
+    buffer.seek(0)
+
+    return buffer
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -162,20 +176,7 @@ if uploaded_file:
         ax.set_title(f"{x_col} vs {y_col}")
         st.pyplot(fig)
 
-        def create_pdf(text):
-            buffer = BytesIO()
-            doc = SimpleDocTemplate(buffer)
 
-            styles = getSampleStyleSheet()
-            content = []
-
-            for line in text.split("\n"):
-                content.append(Paragraph(line, styles["Normal"]))
-
-            doc.build(content)
-            buffer.seek(0)
-
-            return buffer
 
 
         # -------------------------------
