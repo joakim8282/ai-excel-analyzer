@@ -8,16 +8,27 @@ import os
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from io import BytesIO
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+pdfmetrics.registerFont(TTFont('Nanum', 'NanumGothic.ttf'))
 
 def create_pdf(text):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer)
 
     styles = getSampleStyleSheet()
+    style = styles["Normal"]
+
+    # ✅ 폰트 변경
+    style.fontName = 'Nanum'
+
     content = []
+    
+    content.append(Paragraph("AI 데이터 분석 리포트", styles["Title"]))
 
     for line in text.split("\n"):
-        content.append(Paragraph(line, styles["Normal"]))
+        content.append(Paragraph(line, style))
 
     doc.build(content)
     buffer.seek(0)
