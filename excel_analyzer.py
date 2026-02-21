@@ -105,14 +105,52 @@ if uploaded_file:
 
         st.pyplot(fig)
 
-        
-        col = st.selectbox("그래프를 그릴 컬럼 선택", numeric_cols)
+        st.subheader("📉 회귀 분석")
+
+        import seaborn as sns
+
+        x_col = st.selectbox("X축 선택", numeric_cols, key="x")
+        y_col = st.selectbox("Y축 선택", numeric_cols, key="y")
 
         fig, ax = plt.subplots()
-        df[col].plot(kind='line', ax=ax)
-        ax.set_title(f"{col} 추이")
+        sns.regplot(x=df[x_col], y=df[y_col], ax=ax)
+
+        ax.set_title(f"{x_col} vs {y_col} 회귀 분석")
 
         st.pyplot(fig)
+
+
+        st.subheader("📉 회귀 분석")
+
+        import seaborn as sns
+
+        x_col = st.selectbox("X축 선택", numeric_cols, key="x")
+        y_col = st.selectbox("Y축 선택", numeric_cols, key="y")
+
+        fig, ax = plt.subplots()
+        sns.regplot(x=df[x_col], y=df[y_col], ax=ax)
+
+        ax.set_title(f"{x_col} vs {y_col} 회귀 분석")
+
+        st.pyplot(fig)
+
+
+        
+        chart_type = st.selectbox("그래프 타입 선택", ["line", "bar", "hist"])
+
+        fig, ax = plt.subplots()
+
+        if chart_type == "line":
+            df[col].plot(kind='line', ax=ax)
+        elif chart_type == "bar":
+            df[col].plot(kind='bar', ax=ax)
+        elif chart_type == "hist":
+            df[col].plot(kind='hist', ax=ax)
+
+        ax.set_title(f"{col} ({chart_type})")
+
+        st.pyplot(fig)
+
 
 
 
