@@ -104,14 +104,14 @@ if uploaded_file:
             st.subheader("🧠 AI 분석 리포트")
             st.write(insight)
 
-        pdf_file = create_pdf(insight)
+            pdf_file = create_pdf(insight)
 
-        st.download_button(
-            label="📄 PDF 다운로드",
-            data=pdf_file,
-            file_name="analysis_report.pdf",
-            mime="application/pdf"
-        )
+            st.download_button(
+                label="📄 PDF 다운로드",
+                data=pdf_file,
+                file_name="analysis_report.pdf",
+                mime="application/pdf"
+            )
 
 
         # -------------------------------
