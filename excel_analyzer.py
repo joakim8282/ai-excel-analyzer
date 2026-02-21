@@ -5,6 +5,10 @@ import seaborn as sns
 import numpy as np
 from openai import OpenAI
 import os
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from io import BytesIO
+
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -86,6 +90,16 @@ if uploaded_file:
             st.subheader("🧠 AI 분석 리포트")
             st.write(insight)
 
+        pdf_file = create_pdf(insight)
+
+        st.download_button(
+            label="📄 PDF 다운로드",
+            data=pdf_file,
+            file_name="analysis_report.pdf",
+            mime="application/pdf"
+        )
+
+
         # -------------------------------
         # 🚨 이상치 탐지
         # -------------------------------
@@ -147,6 +161,22 @@ if uploaded_file:
 
         ax.set_title(f"{x_col} vs {y_col}")
         st.pyplot(fig)
+
+        def create_pdf(text):
+            buffer = BytesIO()
+            doc = SimpleDocTemplate(buffer)
+
+            styles = getSampleStyleSheet()
+            content = []
+
+            for line in text.split("\n"):
+                content.append(Paragraph(line, styles["Normal"]))
+
+            doc.build(content)
+            buffer.seek(0)
+
+            return buffer
+
 
         # -------------------------------
         # 📈 그래프
